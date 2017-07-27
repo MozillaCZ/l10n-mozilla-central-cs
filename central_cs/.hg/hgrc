@@ -1,0 +1,19 @@
+[paths]
+default = https://hg.mozilla.org/l10n-central/cs/
+default-push = ssh://hg.mozilla.org/l10n-central/cs/
+github = git+ssh://git@github.com/MozillaCZ/l10n-mozilla-central-cs.git
+
+[web]
+name = central_cs
+
+[ui]
+username = Michal Stanke <mstanke@mozilla.cz>
+
+[hooks]
+post-pull.github = ../push\ Central\ to\ GitHub.sh
+post-push.github = ../push\ Central\ to\ GitHub.sh
+
+[extensions]
+hgext.bookmarks =
+hggit =
+

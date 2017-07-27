@@ -1,0 +1,13 @@
+[paths]
+central = ssh://hg.mozilla.org/l10n-central/cs/
+github = git+ssh://git@github.com/MozillaCZ/l10n-mozilla-central-cs.git
+
+[web]
+name = github_l10n-mozilla-central-cs
+
+[ui]
+username = Michal Stanke <mstanke@mozilla.cz>
+
+[extensions]
+hgext.bookmarks =
+hggit =
