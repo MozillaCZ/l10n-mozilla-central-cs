@@ -1,0 +1,19 @@
+language: python
+python:
+ - "2.7"
+
+branches:
+  only:
+    - automation
+
+env:
+  global:
+  - ENCRYPTION_LABEL: "59459741bf254f55"
+
+before_install:
+ - pip install mercurial
+ - pip install hg-git
+
+script:
+ - bash ./push-central-to-github.sh
+
