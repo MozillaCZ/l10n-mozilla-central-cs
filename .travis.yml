@@ -10,6 +10,10 @@ env:
   global:
   - ENCRYPTION_LABEL: "59459741bf254f55"
 
+cache:
+  directories:
+  - github_l10n-mozilla-central-cs
+
 before_install:
  - pip install mercurial
  - pip install hg-git
