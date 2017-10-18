@@ -6,6 +6,14 @@ branches:
   only:
     - automation
 
+notifications:
+  email:
+    recipients:
+    - info@mozilla.cz
+    - mstanke@mozilla.cz
+    on_success: change
+    on_failure: always
+
 env:
   global:
   - ENCRYPTION_LABEL: "59459741bf254f55"
