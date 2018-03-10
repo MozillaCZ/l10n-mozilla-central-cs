@@ -16,10 +16,6 @@ notifications:
     on_success: change
     on_failure: always
 
-env:
-  global:
-  - ENCRYPTION_LABEL: "59459741bf254f55"
-
 before_install:
  - pip install mercurial
  - pip install hg-git
