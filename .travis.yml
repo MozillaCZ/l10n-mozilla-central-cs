@@ -34,8 +34,8 @@ after_script: # Kill the ssh-agent
  - ssh-agent -k
 
 cache:
- - pip
- - directories:
+  directories:
+  - $HOME/.cache/pip
   - github_l10n-mozilla-central-cs
 
 before_cache:
