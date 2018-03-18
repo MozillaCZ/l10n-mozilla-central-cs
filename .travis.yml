@@ -17,8 +17,7 @@ notifications:
     on_failure: always
 
 install:
- - pip install mercurial
- - pip install hg-git
+ - pip install -r requirements.txt
 
 before_script: # Get ssh key from the secret variable
  - echo "$DEPLOY_KEY" | base64 -d > deploy_key
@@ -35,8 +34,8 @@ after_script: # Kill the ssh-agent
  - ssh-agent -k
 
 cache:
-  directories:
-  - $HOME/.cache/pip
+ - pip
+ - directories:
   - github_l10n-mozilla-central-cs
 
 before_cache:
