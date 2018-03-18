@@ -16,12 +16,23 @@ notifications:
     on_success: change
     on_failure: always
 
-before_install:
+install:
  - pip install mercurial
  - pip install hg-git
 
+before_script: # Get ssh key from the secret variable
+ - echo "$DEPLOY_KEY" | base64 -d > deploy_key
+ - chmod 600 deploy_key
+ - eval `ssh-agent -s`
+ - ssh-add deploy_key
+ - ssh-add -L
+
 script:
  - bash ./push-central-to-github.sh
+
+after_script: # Kill the ssh-agent
+ - rm -f deploy_key
+ - ssh-agent -k
 
 cache:
   directories:
@@ -30,4 +41,3 @@ cache:
 
 before_cache:
   - rm -f $HOME/.cache/pip/log/debug.log
-
