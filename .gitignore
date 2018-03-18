@@ -1,3 +1,5 @@
+github_l10n-mozilla-central-cs/*
+!github_l10n-mozilla-central-cs/.hg/hgrc
 deploy_key
 deploy_key.base64
 deploy_key.pub

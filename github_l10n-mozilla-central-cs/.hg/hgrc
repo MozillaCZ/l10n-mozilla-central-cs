@@ -8,4 +8,3 @@ username = Travis CI <travis@travis-ci.com>
 [extensions]
 hgext.bookmarks =
 hggit =
-
