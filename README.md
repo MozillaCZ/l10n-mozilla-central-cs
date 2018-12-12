@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/MozillaCZ/l10n-mozilla-central-cs.svg?branch=automation)](https://travis-ci.org/MozillaCZ/l10n-mozilla-central-cs)
+[![Build Status](https://travis-ci.com/MozillaCZ/l10n-mozilla-central-cs.svg?branch=automation)](https://travis-ci.com/MozillaCZ/l10n-mozilla-central-cs)
 
 ## How to set up the script or rotate keys
 1. Generate a new key: `ssh-keygen -t rsa -b 4096 -C "travis@travis-ci.com" -f "./deploy_key" -N ""`
