@@ -1,5 +1,7 @@
 #!/bin/bash
+
 set -e
+set -o pipefail
 
 # Go to the repository folder, update and mirror it
 cd ./github_l10n-mozilla-central-cs

@@ -1,8 +1,7 @@
-dist: trusty
-sudo: false
-language: python
-python:
- - "2.7"
+dist: focal
+language: minimal
+services:
+  - docker
 
 branches:
   only:
@@ -16,9 +15,6 @@ notifications:
     on_success: change
     on_failure: always
 
-install:
- - pip install -r requirements.txt
-
 before_script: # Get ssh key from the secret variable
  - echo "$DEPLOY_KEY" | base64 -d > deploy_key
  - chmod 600 deploy_key
@@ -27,7 +23,7 @@ before_script: # Get ssh key from the secret variable
  - ssh-add -L
 
 script:
- - bash ./push-central-to-github.sh
+ - make update_mirror_in_docker
 
 after_script: # Kill the ssh-agent
  - rm -f deploy_key
@@ -35,8 +31,4 @@ after_script: # Kill the ssh-agent
 
 cache:
   directories:
-  - $HOME/.cache/pip
   - github_l10n-mozilla-central-cs
-
-before_cache:
-  - rm -f $HOME/.cache/pip/log/debug.log
