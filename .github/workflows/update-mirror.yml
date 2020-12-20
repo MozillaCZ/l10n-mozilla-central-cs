@@ -39,12 +39,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}_hg-repository_
       - name: Prepare deploy key
-        run: |
-          echo "${{ secrets.DEPLOY_KEY }}" | base64 -d > deploy_key
-          chmod 600 deploy_key
-          eval `ssh-agent -s`
-          ssh-add deploy_key
-          ssh-add -L
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Updare mirror
         run: bash ./push-central-to-github.sh
       - name: Cleanup
