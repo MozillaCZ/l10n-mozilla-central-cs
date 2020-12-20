@@ -1,0 +1,54 @@
+on:
+  push:
+    branches:
+      - automation
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: '0 * * * *'
+  workflow_dispatch: # allows to be run manually
+
+jobs:
+  update:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+      - name: Setup Python 2.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: '2.7'
+      - name: Cache Python dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pip
+            !~/.cache/pip/log/debug.log
+            ~/.local/bin
+          key: ${{ runner.os }}_pip_${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}_pip_
+      - name: Install dependencies
+        run: pip install --user -r requirements.txt
+      - name: Cache Mercurial repository clone
+        uses: actions/cache@v2
+        with:
+          path: |
+            github_l10n-mozilla-central-cs
+            !github_l10n-mozilla-central-cs/.hg/hgrc
+          key: ${{ runner.os }}_hg-repository_${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}_hg-repository_
+      - name: Prepare deploy key
+        run: |
+          echo "${{ secrets.DEPLOY_KEY }}" | base64 -d > deploy_key
+          chmod 600 deploy_key
+          eval `ssh-agent -s`
+          ssh-add deploy_key
+          ssh-add -L
+      - name: Updare mirror
+        run: bash ./push-central-to-github.sh
+      - name: Cleanup
+        if: ${{ always() }}
+        run: |
+          rm -f deploy_key
+          ssh-agent -k
