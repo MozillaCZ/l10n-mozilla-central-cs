@@ -45,8 +45,3 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Updare mirror
         run: bash ./push-central-to-github.sh
-      - name: Cleanup
-        if: ${{ always() }}
-        run: |
-          rm -f deploy_key
-          ssh-agent -k
