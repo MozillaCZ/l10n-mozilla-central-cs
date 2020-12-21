@@ -31,16 +31,19 @@ jobs:
         run: pip install --user -r requirements.txt
       - name: Prepare cache key part
         id: cache_date
-        run: echo ::set-output name=MONTH_OF_YEAR::$(date +"%Y-%m")
+        run: |
+          echo ::set-output name=YEAR::$(date +"%Y")
+          echo ::set-output name=MONTH::$(date +"%m")
+          echo ::set-output name=DAY::$(date +"%d")
       - name: Cache Mercurial repository clone
         uses: actions/cache@v2
         with:
           path: |
             github_l10n-mozilla-central-cs
             !github_l10n-mozilla-central-cs/.hg/hgrc
-          key: ${{ runner.os }}_hg-repository_${{ steps.cache_date.outputs.MONTH_OF_YEAR }}
+          key: ${{ runner.os }}_hg-repository_${{ steps.cache_date.outputs.YEAR }}_${{ steps.cache_date.outputs.MONTH }}_${{ steps.cache_date.outputs.DAY }}
           restore-keys: |
-            ${{ runner.os }}_hg-repository_
+            ${{ runner.os }}_hg-repository_${{ steps.cache_date.outputs.YEAR }}_${{ steps.cache_date.outputs.MONTH }}_
       - name: Prepare deploy key
         uses: shimataro/ssh-key-action@v2
         with:
