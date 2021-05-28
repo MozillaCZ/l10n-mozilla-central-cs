@@ -1,0 +1,25 @@
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: '42 13 1 * *'
+  workflow_dispatch: # allows to be run manually
+
+env:
+  COMMITER_EMAIL: info@mozilla.cz
+
+jobs:
+  empty_commit:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+      - name: Create empty commit
+        run: |
+          git config --local user.email "${COMMITER_EMAIL}"
+          git config --local user.name "github-actions"
+          git commit --allow-empty -m "Keep the repository active - $(date +%Y-%m-%d)"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
