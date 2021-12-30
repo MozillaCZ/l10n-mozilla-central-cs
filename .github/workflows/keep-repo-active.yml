@@ -6,6 +6,7 @@ on:
 
 env:
   COMMITER_EMAIL: info@mozilla.cz
+  BRANCH: automation
 
 jobs:
   empty_commit:
@@ -14,7 +15,7 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v2
         with:
-          ref: automation
+          ref: ${{ env.BRANCH }}
       - name: Create empty commit
         run: |
           git config --local user.email "${COMMITER_EMAIL}"
@@ -23,5 +24,5 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
+          branch: ${{ env.BRANCH }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
