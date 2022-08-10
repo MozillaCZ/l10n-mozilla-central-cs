@@ -12,15 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: automation
-      - name: Setup Python 2.7
-        uses: actions/setup-python@v2
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '2.7'
+          python-version: '3.10'
       - name: Cache Python dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cache/pip
@@ -31,14 +31,14 @@ jobs:
             ${{ runner.os }}_pip_
       - name: Install dependencies
         run: pip install --user -r requirements.txt
-      - name: Prepare cache key part
+      - name: Cache Mercurial repository clone - prepare cache key parts
         id: cache_date
         run: |
           echo ::set-output name=YEAR::$(date +"%Y")
           echo ::set-output name=MONTH::$(date +"%m")
           echo ::set-output name=DAY::$(date +"%d")
       - name: Cache Mercurial repository clone
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             github_l10n-mozilla-central-cs

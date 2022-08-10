@@ -1,3 +1,3 @@
-mercurial==4.5
-hg-git==0.8.11
-dulwich==0.18.6
+hg-git==1.0.0
+mercurial==6.2.1
+dulwich==0.20.45
