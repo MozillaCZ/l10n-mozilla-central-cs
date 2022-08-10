@@ -1,7 +1,3 @@
-[paths]
-central = https://hg.mozilla.org/l10n-central/cs/
-github = git+ssh://git@github.com/MozillaCZ/l10n-mozilla-central-cs.git
-
 [ui]
 username = GitHub Actions <info@mozilla.cz>
 

@@ -1,3 +1,5 @@
+name: Update mirror
+
 on:
   push:
     branches:
@@ -46,10 +48,6 @@ jobs:
           key: ${{ runner.os }}_hg-repository_${{ steps.cache_date.outputs.YEAR }}_${{ steps.cache_date.outputs.MONTH }}_${{ steps.cache_date.outputs.DAY }}
           restore-keys: |
             ${{ runner.os }}_hg-repository_${{ steps.cache_date.outputs.YEAR }}_${{ steps.cache_date.outputs.MONTH }}_
-      - name: Prepare deploy key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.DEPLOY_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-      - name: Updare mirror
-        run: bash ./push-central-to-github.sh
+      - name: Update mirror
+        run: bash ./mirror-hg-to-git.sh 'https://hg.mozilla.org/l10n-central/cs/' 'https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git'
+        working-directory: github_l10n-mozilla-central-cs
