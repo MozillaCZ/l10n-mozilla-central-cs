@@ -9,6 +9,10 @@ on:
     - cron: '42 */3 * * *'
   workflow_dispatch: # allows to be run manually
 
+env:
+  SOURGE_HG_REPO_URL: https://hg.mozilla.org/l10n-central/cs/
+  SOURCE_HG_REPO_PATH: source_hg_repo
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -43,11 +47,21 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            github_l10n-mozilla-central-cs
-            !github_l10n-mozilla-central-cs/.hg/hgrc
-          key: ${{ runner.os }}_hg-repository_${{ steps.cache_date.outputs.YEAR }}_${{ steps.cache_date.outputs.MONTH }}_${{ steps.cache_date.outputs.DAY }}
+            ${{ env.SOURCE_HG_REPO_PATH }}
+            !${{ env.SOURCE_HG_REPO_PATH }}/.hg/hgrc
+          key: ${{ runner.os }}_${{ env.SOURCE_HG_REPO_PATH }}_${{ steps.cache_date.outputs.YEAR }}_${{ steps.cache_date.outputs.MONTH }}_${{ steps.cache_date.outputs.DAY }}
           restore-keys: |
-            ${{ runner.os }}_hg-repository_${{ steps.cache_date.outputs.YEAR }}_${{ steps.cache_date.outputs.MONTH }}_
+            ${{ runner.os }}_${{ env.SOURCE_HG_REPO_PATH }}_${{ steps.cache_date.outputs.YEAR }}_${{ steps.cache_date.outputs.MONTH }}_
       - name: Update mirror
-        run: bash '${{ github.workspace }}/mirror-hg-to-git.sh' 'https://hg.mozilla.org/l10n-central/cs/' 'https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git'
-        working-directory: github_l10n-mozilla-central-cs
+        run: |
+          hg pull -u '${{ env.SOURGE_HG_REPO_URL }}'
+          hg update
+          hg bookmark -f default
+          hg \
+            --config auth.gh.prefix=github.com \
+            --config auth.gh.username=x-access-token \
+            --config auth.gh.password='${{ secrets.GITHUB_TOKEN }}' \
+            push 'https://github.com/${{ github.repository }}.git' || push_exit_code=$?
+          if [ -z $push_exit_code ]; then push_exit_code=0; fi
+          (($push_exit_code==0 || $push_exit_code==1)) || exit $push_exit_code
+        working-directory: ${{ env.SOURCE_HG_REPO_PATH }}

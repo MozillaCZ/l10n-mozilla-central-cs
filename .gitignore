@@ -1,4 +1,4 @@
-github_l10n-mozilla-central-cs/*
-!github_l10n-mozilla-central-cs/.hg/hgrc
+source_hg_repo/*
+!source_hg_repo/.hg/hgrc
 deploy_key
 deploy_key.pub
