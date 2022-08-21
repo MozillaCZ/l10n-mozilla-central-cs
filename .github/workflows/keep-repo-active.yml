@@ -1,4 +1,4 @@
-name: Keep the repository active
+name: Keep the repository active # so GitHub Actions keep triggering
 
 on:
   schedule:
@@ -13,6 +13,7 @@ env:
 jobs:
   empty_commit:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Clone repository
         uses: actions/checkout@v3
